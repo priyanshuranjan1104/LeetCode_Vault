@@ -15,19 +15,24 @@ class Solution {
         ListNode prevGroup = dummy;
 
         while (true) {
-            ListNode kth = getKthNode(prevGroup, k);
-            if (kth == null) break;
+            ListNode kth = prevGroup;
+            for (int i = 0; i < k && kth != null; i++) {
+                kth = kth.next;
+            }
 
-            ListNode nextGroup = kth.next;
+            if (kth == null) {
+                break;
+            }
 
-            ListNode prev = nextGroup;
+            ListNode groupNext = kth.next;
+            ListNode prev = groupNext;
             ListNode curr = prevGroup.next;
 
-            while (curr != nextGroup) {
-                ListNode temp = curr.next;
+            while (curr != groupNext) {
+                ListNode next = curr.next;
                 curr.next = prev;
                 prev = curr;
-                curr = temp;
+                curr = next;
             }
 
             ListNode temp = prevGroup.next;
@@ -36,13 +41,5 @@ class Solution {
         }
 
         return dummy.next;
-    }
-
-    public ListNode getKthNode(ListNode curr, int k) {
-        while (curr != null && k > 0) {
-            curr = curr.next;
-            k--;
-        }
-        return curr;
     }
 }
